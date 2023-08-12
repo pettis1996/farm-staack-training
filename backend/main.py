@@ -3,6 +3,8 @@ from database import fetch_one_todo, fetch_all_todos
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from model import Todo
+
 app = FastAPI(debug=True)
 
 origins = [
@@ -26,7 +28,7 @@ async def get_todo():
     response = await fetch_all_todos()
     return response
 
-@app.get("/api/todo/{title}")
+@app.get("/api/todo/{title}", response_model=Todo)
 async def get_todo_by_title(title: str):
     response = await fetch_one_todo(title)
     
