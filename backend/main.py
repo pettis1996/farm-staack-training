@@ -1,8 +1,8 @@
+import motor.motor_asyncio
 from bson import ObjectId
-from database import fetch_one_todo, fetch_all_todos
+from database import fetch_all_todos, fetch_one_todo, update_todo
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
 from model import Todo
 
 app = FastAPI(debug=True)
@@ -31,7 +31,13 @@ async def get_todo():
 @app.get("/api/todo/{title}", response_model=Todo)
 async def get_todo_by_title(title: str):
     response = await fetch_one_todo(title)
-    
     if response: 
         return response
+    raise HTTPException(404, f"There is no todo item with title: [{title}].")
+
+@app.put("/api/todo/{title}", response_model=Todo)
+async def put_todo(title: str, descr: str):
+    response = await update_todo(title, descr)
+    if response:
+        return response 
     raise HTTPException(404, f"There is no todo item with title: [{title}].")
