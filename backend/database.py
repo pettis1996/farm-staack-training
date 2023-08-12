@@ -26,3 +26,7 @@ async def update_todo(title, descr):
     await collection.update_one({"title":title}, {"$set":{"description":descr}})
     document = await collection.find_one({"title":title})
     return document
+
+async def remove_todo(title):
+    await collection.delete_one({"title":title})
+    return True 

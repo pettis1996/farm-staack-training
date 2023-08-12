@@ -1,6 +1,6 @@
 import motor.motor_asyncio
 from bson import ObjectId
-from database import fetch_all_todos, fetch_one_todo, update_todo
+from database import fetch_all_todos, fetch_one_todo, create_todo, update_todo, remove_todo
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from model import Todo
@@ -46,5 +46,12 @@ async def post_todo(todo: Todo):
 async def put_todo(title: str, descr: str):
     response = await update_todo(title, descr)
     if response:
-        return response 
+        return True 
     raise HTTPException(404, f"There is no todo item with title: [{title}].")
+
+
+@app.delete("/api/todo/{title}")
+async def delete_todo_by_id(title: str):
+    response = await remove_todo(title)
+    if response:
+        return f"Successfully deleted todo: [{title}]"
