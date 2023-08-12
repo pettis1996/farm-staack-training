@@ -16,6 +16,11 @@ async def fetch_all_todos():
     async for document in cursor:
         todos.append(Todo(**document))
     return todos
+
+async def create_todo(todo):
+    document = todo
+    result = await collection.insert_one(document)
+    return result
     
 async def update_todo(title, descr):
     await collection.update_one({"title":title}, {"$set":{"description":descr}})
