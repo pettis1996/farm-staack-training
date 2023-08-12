@@ -20,7 +20,9 @@ async def fetch_all_todos():
 async def create_todo(todo):
     document = todo
     result = await collection.insert_one(document)
-    return result
+    if result:
+        return {"title": todo["title"], "description": todo["description"]}
+    return None
     
 async def update_todo(title, descr):
     await collection.update_one({"title":title}, {"$set":{"description":descr}})
