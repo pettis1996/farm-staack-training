@@ -8,7 +8,7 @@ from model import Todo
 app = FastAPI(debug=True)
 
 origins = [
-    'https://localhost:3000'
+    'http://localhost:3000',
 ]
 
 app.add_middleware(
